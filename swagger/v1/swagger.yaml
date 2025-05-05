@@ -130,6 +130,8 @@ paths:
       summary: User logout
       tags:
       - Authentication
+      security:
+      - BearerAuth: []
       responses:
         '204':
           description: User logged out successfully
