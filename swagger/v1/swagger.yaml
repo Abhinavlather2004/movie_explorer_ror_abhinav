@@ -78,7 +78,7 @@ paths:
                   value:
                     id: 1
                     email: user@example.com
-                    name: Aalek
+                    name: Abhinav
                     mobile_number: "+12345678901"
                     token: some_jwt_token_here
               schema:
@@ -468,7 +468,7 @@ paths:
 servers:
 - url: http://localhost:3000
   description: Local server
-- url: https://movie-explorer-ror-aalekh-2ewg.onrender.com
+- url: https://movie-explorer-ror-abhinav.onrender.com
   description: Production server
 components:
   securitySchemes:

@@ -25,7 +25,7 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         { url: 'http://localhost:3000', description: 'Local server' },
-        { url: 'https://movie-explorer-ror-aalekh-2ewg.onrender.com', description: 'Production server' }
+        { url: 'https://movie-explorer-ror-abhinav.onrender.com', description: 'Production server' }
       ],
       components: {
         securitySchemes: {
