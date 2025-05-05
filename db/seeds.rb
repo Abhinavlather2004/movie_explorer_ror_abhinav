@@ -1,7 +1,11 @@
 AdminUser.delete_all
 User.delete_all
 
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+AdminUser.find_or_create_by!(email: 'admin@example.com') do |admin|
+  admin.password = 'password'
+  admin.password_confirmation = 'password'
+end
+
 
 User.create!(
   name: 'Test User',
