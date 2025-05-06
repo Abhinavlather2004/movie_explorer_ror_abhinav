@@ -140,6 +140,8 @@ paths:
       summary: Fetch current user
       tags:
       - Users
+      security:
+      - BearerAuth: []
       responses:
         '200':
           description: User details returned

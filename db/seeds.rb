@@ -1,4 +1,5 @@
 AdminUser.delete_all
+Subscription.delete_all
 User.delete_all
 
 # Create admin for development environment (only if it doesn't already exist)

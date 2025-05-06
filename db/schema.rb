@@ -91,7 +91,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_02_065810) do
     t.string "status", default: "active", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "stripe_customer_id
+    t.string "stripe_customer_id"
     t.string "stripe_subscription_id"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
