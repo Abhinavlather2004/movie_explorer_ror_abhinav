@@ -11,15 +11,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :movies, only: [:index, :show, :create, :update, :destroy]
       get 'current_user', to: 'users#current'
-      resources :subscriptions, only: [:create] do
-        collection do
-          get 'success'
-          get 'cancel'
-        end
-      end
-      post 'webhooks/stripe', to: 'webhooks#stripe'
+      resources :subscriptions, only: [:create]
+      get 'subscriptions/success', to: 'subscriptions#success'
+      get 'subscriptions/status', to: 'subscriptions#status'
       post 'update_device_token', to: 'users#update_device_token'
-      patch 'toggle_notifications', to: 'users#toggle_notifications'
+      post 'toggle_notifications', to: 'users#toggle_notifications'
     end
   end
 end
