@@ -4,10 +4,6 @@ module Api
       before_action :authenticate_user!
       skip_before_action :verify_authenticity_token
 
-      # def current
-      #   render json: { id: current_user.id, email: current_user.email, role: current_user.role }
-      # end
-
       def current
         if @current_user
           render json: {

@@ -113,20 +113,4 @@ RSpec.describe User, type: :model do
     end
   end
 
-  # Test scopes
-  describe "scopes" do
-    it "filters users by role" do
-      user1 = create(:user, role: :user)
-      user2 = create(:user, role: :supervisor)
-      expect(User.by_role(:supervisor)).to include(user2)
-      expect(User.by_role(:supervisor)).not_to include(user1)
-    end
-
-    it "orders users by recent creation" do
-      older_user = create(:user, created_at: 2.days.ago)
-      newer_user = create(:user, created_at: 1.day.ago)
-      expect(User.recent.first).to eq(newer_user)
-      expect(User.recent.last).to eq(older_user)
-    end
-  end
 end

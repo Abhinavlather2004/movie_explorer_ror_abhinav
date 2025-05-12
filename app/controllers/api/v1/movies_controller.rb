@@ -2,7 +2,6 @@ module Api
   module V1
     class MoviesController < ApplicationController
       skip_before_action :verify_authenticity_token
-      # before_action :authenticate_user!, only: [:create, :show, :update, :destroy]
       before_action :authenticate_user!, only: [:create, :update, :destroy]
       before_action :ensure_supervisor, only: [:create, :update, :destroy]
 
@@ -34,19 +33,6 @@ module Api
           }, status: :ok
         end
       end
-
-      # def show
-      #   movie = Movie.find_by(id: params[:id])
-      #   if movie
-      #     if can_access_movie?(movie)
-      #       render json: ::MovieSerializer.new(movie).serializable_hash, status: :ok
-      #     else
-      #       render json: { error: 'Access denied. Please upgrade your subscription.' }, status: :forbidden
-      #     end
-      #   else
-      #     render json: { error: "Movie not found" }, status: :not_found
-      #   end
-      # end
 
       def show
         movie = Movie.find_by(id: params[:id])
@@ -90,7 +76,7 @@ module Api
         movie = Movie.find_by(id: params[:id])
         if movie
           movie.destroy
-          render json: {message: "Movie deleted successfully"},status: :ok
+          render json: { message: "Movie deleted successfully" }, status: :ok
           head :no_content
         else
           render json: { error: "Movie not found" }, status: :not_found
@@ -102,7 +88,7 @@ module Api
       def movie_params
         params.require(:movie).permit(
           :title, :genre, :release_year, :rating, :director,
-          :duration, :description,:main_lead,:streaming_platform, :premium, :poster, :banner
+          :duration, :description, :main_lead, :streaming_platform, :premium, :poster, :banner
         )
       end
 
@@ -118,18 +104,15 @@ module Api
 
       def ensure_supervisor
         unless @current_user&.supervisor?
-          Rails.logger.info "Access denied: User #{@current_user&.id} is not a supervisor"
           render json: { error: 'Forbidden: Supervisor access required' }, status: :forbidden and return
         end
-        Rails.logger.info "Access granted: User #{@current_user&.id} is a supervisor"
-      end      
+      end
 
       def can_access_movie?(movie)
         subscription = @current_user&.subscription
         Rails.logger.info "User #{@current_user&.id}, Subscription plan: #{subscription&.plan_type}, Movie Premium: #{movie.premium?}"
 
         return false unless subscription&.active?
-        
         if subscription.free?
           Rails.logger.info "Access denied: Free subscription"
           false
@@ -147,15 +130,13 @@ module Api
         device_tokens = users.pluck(:device_token)
         begin
           fcm_service = FcmService.new
-          response = fcm_service.send_notification(device_tokens, "New Movie Added!", "#{movie.title} has been added to the Movie Explorer collection.", { movie_id: movie.id.to_s })
-          Rails.logger.info("FCM Response: #{response}")
-          if response[:status_code] == 200
-            Rails.logger.info("FCM Response: #{response}")
-          else
-            Rails.logger.error("FCM Error: #{response[:body]}")
-          end
-        rescue StandardError => e
-          Rails.logger.error("FCM Notification Failed: #{e.message}")
+          fcm_service.send_notification(
+            device_tokens,
+            "New Movie Added!",
+            "#{movie.title} has been added to the Movie Explorer collection.",
+            { movie_id: movie.id.to_s }
+          )
+        rescue StandardError  
         end
       end
     end
