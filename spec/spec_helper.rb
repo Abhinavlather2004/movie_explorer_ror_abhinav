@@ -13,6 +13,20 @@
 # it.
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+
+require 'simplecov'
+SimpleCov.start 'rails' do
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Models', 'app/models'
+  add_group 'Services', 'app/services'
+  add_group 'Helpers', 'app/helpers'
+
+  # Exclude specific files or directories
+  add_filter %w[app/views lib/rails bin coverage log test vendor node_modules db doc public storage tmp]
+
+end
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

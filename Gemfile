@@ -98,3 +98,7 @@ gem 'stripe'
 
 gem "httparty"
 gem "googleauth"
+
+group :test do
+  gem 'simplecov', require: false
+end
