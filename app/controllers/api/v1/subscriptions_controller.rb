@@ -8,11 +8,11 @@ class Api::V1::SubscriptionsController < ApplicationController
     return render json: { error: 'Invalid plan type' }, status: :bad_request unless %w[1_day 7_days 1_month].include?(plan_type)
     price_id = case plan_type
                when '1_day'
-                 'price_1RMSBv4U6YkvkGXs0q4knnrt'
+                 ENV['STRIPE_PRICE_1_DAY']
                when '7_days'
-                 'price_1RMSCG4U6YkvkGXs3aPeP5FD'
+                 ENV['STRIPE_PRICE_7_DAYS']
                when '1_month'
-                 'price_1RMSCc4U6YkvkGXsdpgUg8tl'
+                 ENV['STRIPE_PRICE_1_MONTH']
                end
 
     session = Stripe::Checkout::Session.create(
@@ -24,8 +24,9 @@ class Api::V1::SubscriptionsController < ApplicationController
         user_id: @current_user.id,
         plan_type: plan_type
       },
-      success_url: "http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "http://localhost:3000/api/v1/subscriptions/cancel"
+      
+      success_url: "#{ENV['SUCCESS_URL']}?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: "#{ENV['CANCEL_URL']}"
     )
 
     render json: { session_id: session.id, url: session.url }, status: :ok
